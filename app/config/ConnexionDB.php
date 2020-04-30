@@ -11,10 +11,10 @@ class ConnexionDB {
 
     private static $_db = null;
     private static $_instance = null;
-    const DB_USER = '';
+    const DB_USER = 'root';
     const DB_PASSWORD = '';
     const DB_HOST = '';
-    const DB_NAME = '';
+    const DB_NAME = 'formation_articles';
     const DBMS_PORT = '';
 
     public function __construct()
