@@ -3,7 +3,7 @@
 use App\Managers\ArticleManager;
 use App\Models\Article;
 
-require "vendor/autoload.php";
+require 'vendor/autoload.php';
 
 /**
  * URL de l'api: http://localhost/rest-api-training/article
@@ -13,18 +13,17 @@ require "vendor/autoload.php";
  * modifier un article ?
  * supprimer un article ?
  */
-$request_method = $_SERVER["REQUEST_METHOD"];
+$request_method = $_SERVER['REQUEST_METHOD'];
 
 $am = new ArticleManager();
 
-$response = null;
 switch($request_method)
 {
     case 'GET':
-        if(!empty($_GET["id"]))
+        if(!empty($_GET['id']))
         {
             // Récupérer un seul produit
-            $id = intval($_GET["id"]);
+            $id = intval($_GET['id']);
             $response = $am->findOneById($id);
         }
         else {
@@ -36,39 +35,33 @@ switch($request_method)
     case 'POST':
         $json = file_get_contents('php://input');
         $data = (array) json_decode($json);
-        $article = new Article();
-        $article->setLibelle($data['libelle']);
-        $article->setPrix($data['prix']);
-        $article->setQuantite($data['quantite']);
-        $data['id'] = $am->save($article);
-        $response = $data;
+        $article = new Article($data);
+
+        $response = $am->save($article);
         break;
     case 'PUT':
         $json = file_get_contents('php://input');
         $data = (array) json_decode($json);
 
-        $article = new Article();
-        $id = intval($_GET["id"]);
+        $article = new Article($data);
+        $id = intval($_GET['id']);
         $article->setId($id);
-        $article->setLibelle($data['libelle']);
-        $article->setPrix($data['prix']);
-        $article->setQuantite($data['quantite']);
 
-        $am->update($article);
-        $data['id'] = $id;
-        $response = $data;
+        $response = $am->update($article);
         break;
     case 'DELETE':
-        $id = intval($_GET["id"]);
-        $response = $am->remove($id);
+        $id = intval($_GET['id']);
+        $am->remove($id);
         break;
     default:
-        header("HTTP/1.0 405 Method Not Allowed");
+        header('HTTP/1.0 405 Method Not Allowed');
         break;
 }
 
 header('Content-Type: application/json');
-echo json_encode($response);
+if (isset($response)) {
+    echo json_encode($response);
+}
 
 
 

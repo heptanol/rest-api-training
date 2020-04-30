@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : mysql:3306
--- Généré le :  jeu. 30 avr. 2020 à 06:26
+-- Généré le :  jeu. 30 avr. 2020 à 11:14
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.8
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `formation_articles`
 --
+CREATE DATABASE IF NOT EXISTS `formation_articles` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `formation_articles`;
 
 -- --------------------------------------------------------
 
@@ -40,9 +42,10 @@ CREATE TABLE `article` (
 --
 
 INSERT INTO `article` (`id`, `libelle`, `prix`, `quantite`) VALUES
-(1, 'Four', 450, 0),
-(2, 'Frigo', 800, 2),
-(3, 'Micro onde', 900, 100);
+  (1, 'television', 600, 12),
+  (2, 'Frigo', 1800, 2),
+  (2, 'Box', 50, 400),
+  (3, 'Micro onde', 900, 100);
 
 --
 -- Index pour les tables déchargées
@@ -52,6 +55,7 @@ INSERT INTO `article` (`id`, `libelle`, `prix`, `quantite`) VALUES
 -- Index pour la table `article`
 --
 ALTER TABLE `article`
+  ADD UNIQUE KEY `id_2` (`id`),
   ADD KEY `id` (`id`);
 
 --
@@ -62,7 +66,7 @@ ALTER TABLE `article`
 -- AUTO_INCREMENT pour la table `article`
 --
 ALTER TABLE `article`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -28,7 +28,8 @@ class ArticleManager
             $req->bindValue(':prix', $article->getPrix(), \PDO::PARAM_STR);
             $req->bindValue(':quantite', $article->getQuantite(), \PDO::PARAM_STR);
             if ($req->execute()) {
-                return $this->_db->lastInsertId();
+                $article->setId($this->_db->lastInsertId());
+                return $article;
             }
         } catch (\PDOException $e) {
             throw $e;
@@ -45,7 +46,7 @@ class ArticleManager
             $articles = [];
             $req = $this->_db->query('SELECT * FROM article');
             while ($res = $req->fetch(\PDO::FETCH_ASSOC)) {
-                $articles[] = $res;
+                $articles[] = new Article($res);
             }
             return $articles;
         } catch (\PDOException $e) {
@@ -63,7 +64,7 @@ class ArticleManager
             $req = $this->_db->prepare('SELECT * FROM article WHERE id = :id');
             $req->bindValue(':id', $id, \PDO::PARAM_INT);
             if ($req->execute()) {
-                return $req->fetch(\PDO::FETCH_ASSOC);;
+                return new Article($req->fetch(\PDO::FETCH_ASSOC));
             }
         } catch (\PDOException $e) {
             throw $e;
