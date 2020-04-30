@@ -19,9 +19,8 @@ class ArticleManager
      * Fonction create crée un article dans la DB
      * @param Article $article
      */
-    public function create(Article $article)
+    public function save(Article $article)
     {
-
     }
 
     /**
@@ -29,7 +28,16 @@ class ArticleManager
      */
     public function findAll()
     {
-
+        try {
+            $articles = [];
+            $req = $this->_db->query('SELECT * FROM article');
+            while ($res = $req->fetch(\PDO::FETCH_ASSOC)) {
+                $articles[] = new Article($res);
+            }
+            return $articles;
+        } catch (\PDOException $e) {
+            throw $e;
+        }
     }
 
     /**
@@ -38,7 +46,16 @@ class ArticleManager
      */
     public function findOneById($id)
     {
-
+        try {
+            $req = $this->_db->prepare('SELECT * FROM article WHERE id = :id');
+            $req->bindValue(':id', $id, \PDO::PARAM_INT);
+            if ($req->execute()) {
+                return new Article($req->fetch(\PDO::FETCH_ASSOC));
+            }
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+        throw new \Exception();
     }
 
     /**
@@ -47,7 +64,6 @@ class ArticleManager
      */
     public function remove($id)
     {
-
     }
 
     /**
@@ -56,6 +72,6 @@ class ArticleManager
      */
     public function update(Article $article)
     {
-
     }
+
 }
